@@ -115,12 +115,12 @@ void TaskPressSens1(void *pvParameters)  // This is a task.
     // read the input on analog pin 0:
     //    int sensorValue = analogRead(A0);
     // print out the value you read:
-    if (! xQueueSend(QueuePressToLED, &ax, 10)) {
+    if (! xQueueSend(QueuePressToLED, &ax, 1)) {
             Serial.println("Failed to send to queue");
     }
 
     //    Serial.println(i);
-    vTaskDelay(20);  // one tick delay (15ms) in between reads for stability
+    vTaskDelay(1);  // one tick delay (15ms) in between reads for stability
 
     i++;
   }
@@ -134,12 +134,12 @@ void TaskLED(void *pvParameters)  // This is a task.
 
   for (;;) // A Task shall never return or exit.
   {
-    if (xQueueReceive(QueuePressToLED, &press_val, 20)) {
+    if (xQueueReceive(QueuePressToLED, &press_val, 1)) {
 //      Serial.println("Received : ");
 //      Serial.println(press_val);
       brightness = abs((17000+press_val)/140);
       analogWrite(LED_BUILTIN, brightness);
-      vTaskDelay( 10); // wait for one second
+//      vTaskDelay( 10); // wait for one second
     }
     else {
             Serial.println("Failed to receive");
